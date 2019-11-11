@@ -133,11 +133,13 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
-
 #LightSwitch generated files
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+# Visual Studio 2015 cache/options directory
+.vs/
 
 # =========================
 # Windows detritus
