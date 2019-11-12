@@ -3,7 +3,11 @@
 > This project is intended to be used **asynchronously** only. Non-async methods are not exposed.  
 
 練習 Unit of Work Pattern 實作於 Dapper 上。  
-Unit of Work Pattern Implementation for dapper In .Net Core. 
+Unit of work pattern implementation for dapper in .Net Core.  
+
+此專案以北風資料庫作為範例。  
+This project use Northwind database, for example.  
+[Northwind and pubs sample databases for Microsoft SQL Server](https://github.com/microsoft/sql-server-samples/tree/master/samples/databases/northwind-pubs)
 # Last Version
 1.0.0.0 (November 12, 2019)
 # Record
