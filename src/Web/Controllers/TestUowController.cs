@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Threading.Tasks;
 using Web.Domain;
@@ -49,7 +49,7 @@ namespace Web.Controllers
                 uow.SaveChanges();
             }
 
-            return JsonConvert.SerializeObject(new { INSERT = insertResult, DELETE = deleteResult });
+            return JsonSerializer.Serialize(new { INSERT = insertResult, DELETE = deleteResult });
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Web.Controllers
                 uow.SaveChanges();
             }
 
-            return JsonConvert.SerializeObject(new { INSERT = insertResult, DELETE = deleteResult });
+            return JsonSerializer.Serialize(new { INSERT = insertResult, DELETE = deleteResult });
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Web.Controllers
                 uow.SaveChanges();
             }
 
-            return JsonConvert.SerializeObject(new { INSERT = insertResult, DELETE = deleteResult });
+            return JsonSerializer.Serialize(new { INSERT = insertResult, DELETE = deleteResult });
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Web.Controllers
                 deleteResult = await uow.Customer.DeleteAsync(customer.CustomerID);
             }
 
-            return JsonConvert.SerializeObject(new { INSERT = insertResult, DELETE = deleteResult });
+            return JsonSerializer.Serialize(new { INSERT = insertResult, DELETE = deleteResult });
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Web.Controllers
                 uow.SaveChanges();
             }
 
-            return JsonConvert.SerializeObject(new { INSERT = insertResult, DELETE = deleteResult });
+            return JsonSerializer.Serialize(new { INSERT = insertResult, DELETE = deleteResult });
         }
     }
 }

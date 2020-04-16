@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Domain;
@@ -39,7 +39,7 @@ namespace Web.Controllers
                 customers = await uow.Customer.GetAllAsync();
             }
 
-            return JsonConvert.SerializeObject(customers);
+            return JsonSerializer.Serialize(customers);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Web.Controllers
                 customer = await uow.Customer.FindAsync(id);
             }
 
-            return JsonConvert.SerializeObject(customer);
+            return JsonSerializer.Serialize(customer);
         }
 
         /// <summary>

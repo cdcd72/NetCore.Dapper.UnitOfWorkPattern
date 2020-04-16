@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Data;
 using Web.Core;
 using Web.Core.Enum;
@@ -36,24 +35,17 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             // 註冊Configuration
             services.AddSingleton(Configuration);
 
             // 每一 Request 都注入一個新實例
             services.AddScoped<IUnitOfWork>(x => new UnitOfWork(GetConnection(Configuration)));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -67,22 +59,17 @@ namespace Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapRoute(
-                    name: "customer",
-                    template: "{controller=Customer}/{action=Customers}/{id?}");
-                routes.MapRoute(
-                    name: "order",
-                    template: "{controller=Order}/{action=Orders}/{id?}");
-                routes.MapRoute(
-                    name: "uow",
-                    template: "{controller=TestUow}/{action=Get}/{id?}");
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(name: "customer", pattern: "{controller=Customer}/{action=Customers}/{id?}");
+                endpoints.MapControllerRoute(name: "order", pattern: "{controller=Order}/{action=Orders}/{id?}");
+                endpoints.MapControllerRoute(name: "uow", pattern: "{controller=TestUow}/{action=Get}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
 
