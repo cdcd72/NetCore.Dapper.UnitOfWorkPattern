@@ -49,7 +49,7 @@ namespace Web
             // 每一 Request 都注入一個新實例
             services.AddScoped<IUnitOfWork>(x => new UnitOfWork(GetConnection(Configuration)));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
