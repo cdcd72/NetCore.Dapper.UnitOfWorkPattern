@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Web.Core
+namespace Web.Core.Interfaces
 {
     public interface IGenericRepository<T>
     {

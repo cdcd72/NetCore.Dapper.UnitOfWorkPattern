@@ -13,12 +13,14 @@ This project use Northwind database, for example.
 Unit Testing...  
 
 ## 最後版本
-1.0.0.1 (April 16, 2020)
+1.0.0.2 (April 21, 2020)
 ## 記錄
 * 1.0.0.0
-  * Initial Commit (初次上版)
+  * Initial commit (初次上版)
 * 1.0.0.1
   * .Net Core 2.1 upgrade to 3.1 (升版至 .NET Core 3.1)
+* 1.0.0.2
+  * Modify solution structure (調整專案結構)
 ## 參考 github
 [DapperUnitOfWork](https://github.com/timschreiber/DapperUnitOfWork) by timschreiber  
 [DapRepo](https://github.com/mehrdadbahrainy/DapRepo) by mehrdadbahrainy  

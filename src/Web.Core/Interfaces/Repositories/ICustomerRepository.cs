@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Web.Core;
 using Web.Domain;
 
-namespace Web.Repositories.Interface
+namespace Web.Core.Interfaces
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
-using Web.Repositories.Interface;
+using Web.Core.Interfaces;
+using Web.Dapper.Repositories;
 
-namespace Web.Repositories.Implement
+namespace Web.Dapper.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -25,12 +26,13 @@ namespace Web.Repositories.Implement
 
         #region Constructor
 
-        public UnitOfWork(IDbConnection connection, IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
+        public UnitOfWork(IConnectionFactory connectionFactory)
         {
-            _connection = connection;
+            _connection = connectionFactory.GetConnection();
+            _connection.Open();
 
             // 開始交易
-            _transaction = connection.BeginTransaction(isolationLevel);
+            _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
         #endregion
@@ -52,7 +54,7 @@ namespace Web.Repositories.Implement
             finally
             {
                 _transaction.Dispose();
-                _transaction = _connection.BeginTransaction();
+                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
                 ResetRepositories();
             }
         }

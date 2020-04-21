@@ -1,44 +1,57 @@
 ﻿using Microsoft.Data.SqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+using Web.Core.Configuration;
 using Web.Core.Enum;
+using Web.Core.Interfaces;
 
 namespace Web.Core
 {
-    public class ConnectionFactory
+    public class ConnectionFactory : IConnectionFactory
     {
         #region Properties
 
-        private readonly DBProvider _dBProvider;
-        private readonly string _connectionString;
+        private readonly IDbSettingsResolved _dbSettingsResolved;
 
         #endregion
 
         #region Constructor
 
-        public ConnectionFactory(DBProvider dBProvider, string connectionString)
+        public ConnectionFactory(IDbSettingsResolved dbSettingsResolved)
         {
-            _dBProvider = dBProvider;
-            _connectionString = connectionString;
+            _dbSettingsResolved = dbSettingsResolved;
         }
 
         #endregion
 
         /// <summary>
-        /// 建立資料庫連線
+        /// 取得資料庫連線
         /// </summary>
         /// <returns></returns>
-        public IDbConnection CreateConnection()
+        public IDbConnection GetConnection()
+        {
+            return CreateConnection(_dbSettingsResolved.ConnectionType, _dbSettingsResolved.ConnectionString);
+        }
+
+        #region Private Method
+
+        /// <summary>
+        /// 建立資料庫連線
+        /// </summary>
+        /// <param name="dbProvider"></param>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
+        private IDbConnection CreateConnection(DBProvider dbProvider, string connectionString)
         {
             IDbConnection connection = null;
 
-            switch (_dBProvider)
+            switch (dbProvider)
             {
                 case DBProvider.Oracle:
-                    connection = new OracleConnection(_connectionString);
+                    connection = new OracleConnection(connectionString);
                     break;
                 case DBProvider.MsSqlServer:
-                    connection = new SqlConnection(_connectionString);
+                    connection = new SqlConnection(connectionString);
                     break;
                 default:
                     break;
@@ -46,5 +59,7 @@ namespace Web.Core
 
             return connection;
         }
+
+        #endregion
     }
 }

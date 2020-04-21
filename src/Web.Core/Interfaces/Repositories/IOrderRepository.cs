@@ -1,7 +1,6 @@
-﻿using Web.Core;
-using Web.Domain;
+﻿using Web.Domain;
 
-namespace Web.Repositories.Interface
+namespace Web.Core.Interfaces
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {

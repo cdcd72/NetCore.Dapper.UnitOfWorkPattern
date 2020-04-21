@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Web.Repositories.Interface
+namespace Web.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

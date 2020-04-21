@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Web.Core.Interfaces;
 using Web.Domain;
-using Web.Repositories.Interface;
 
 namespace Web.Controllers
 {

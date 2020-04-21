@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data;
 using Web.Core;
-using Web.Core.Enum;
-using Web.Repositories.Implement;
-using Web.Repositories.Interface;
+using Web.Core.Configuration;
+using Web.Core.Interfaces;
+using Web.Dapper.UnitOfWork;
 
 namespace Web
 {
@@ -16,10 +15,6 @@ namespace Web
         #region Properties
 
         public IConfiguration Configuration { get; }
-
-        // 常數定義
-        private const string DB_SETTINGS = "DBSettings",
-                             CONNECTION_TYPE = "ConnectionType";
 
         #endregion
 
@@ -35,11 +30,26 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // 註冊Configuration
+            // 註冊 Configuration
             services.AddSingleton(Configuration);
 
+            #region 解析 DbSettings
+
+            services.Configure<DbSettings>(Configuration.GetSection("DbSettings"));
+
+            // 註冊區塊驗證器
+            services.AddSingleton<ISettingsValidator, SettingsValidator>();
+
+            // 注入經橋接後被解析的 DbSettings
+            services.AddScoped<IDbSettingsResolved, DbSettingsBridge>();
+
+            #endregion
+
+            // 註冊 ConnectionFactory
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
+
             // 每一 Request 都注入一個新實例
-            services.AddScoped<IUnitOfWork>(x => new UnitOfWork(GetConnection(Configuration)));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddRazorPages();
         }
@@ -74,31 +84,6 @@ namespace Web
         }
 
         #region Private Method
-
-        /// <summary>
-        /// 取得連線
-        /// </summary>
-        /// <returns></returns>
-        private IDbConnection GetConnection(IConfiguration configuration)
-        {
-            #region 取得資料庫設定
-
-            var dbSettingsSection = configuration.GetSection(DB_SETTINGS);
-
-            // 連線類型及字串
-            string connectionType = dbSettingsSection.GetSection(CONNECTION_TYPE).Value,
-                   connectionString = dbSettingsSection.GetConnectionString(connectionType);
-
-            // 資料庫來源提供者
-            DBProvider dBProvider = connectionType.ConvertFromString<DBProvider>();
-
-            #endregion
-
-            var factory = new ConnectionFactory(dBProvider, connectionString);
-            var connection = factory.CreateConnection();
-            connection.Open();
-            return connection;
-        }
 
         #endregion
     }
