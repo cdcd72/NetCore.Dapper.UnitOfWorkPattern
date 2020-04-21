@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Web.Core\Web.Core.csproj" />
     <ProjectReference Include="..\Web.Dapper\Web.Dapper.csproj" />
-    <ProjectReference Include="..\Web.Domain\Web.Domain.csproj" />
   </ItemGroup>
 
 </Project>
